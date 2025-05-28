@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>城市设计AI辅助系统项目技术交底文案 V2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .section-page {
+            min-height: 100vh; /* Mimic 1080px height for each section */
+            width: 100vw; /* Mimic 1920px width */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        .bento-grid {
+            display: grid;
+            gap: 1.5rem; /* Gap between grid items */
+            width: 100%;
+            height: 100%;
+        }
+        .grid-item {
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.8), rgba(20, 20, 20, 0.9));
+            border: 1px solid rgba(50, 50, 50, 0.5);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            position: relative;
+        }
+        .highlight-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            pointer-events: none;
+            background: transparent;
+            z-index: 0;
+        }
+        .highlight-border.cyan { border: 1px solid rgba(6, 182, 212, 0.5); }
+        .highlight-border.purple { border: 1px solid rgba(168, 85, 247, 0.5); }
+        .highlight-border.lime { border: 1px solid rgba(132, 204, 22, 0.5); }
+
+        /* Scroll animation classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .animate-on-scroll.scale-in {
+            transform: scale(0.9);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.scale-in.is-visible {
+            transform: scale(1);
+        }
+
+        /* Gradient overlay for techy feel */
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.1;
+            border-radius: 1rem;
+        }
+        .gradient-overlay.cyan { background: radial-gradient(circle at top left, rgba(6, 182, 212, 0.3), transparent 70%); }
+        .gradient-overlay.purple { background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.3), transparent 70%); }
+        .gradient-overlay.lime { background: radial-gradient(circle at bottom left, rgba(132, 204, 22, 0.3), transparent 70%); }
+
+        /* Custom SVG for line graphics */
+        .line-graphic {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .line-graphic.top-left { top: 0; left: 0; }
+        .line-graphic.bottom-right { bottom: 0; right: 0; }
+        .line-graphic.center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        /* Responsive adjustments for Bento Grid */
+        @media (min-width: 768px) {
+            .bento-grid-md-2 { grid-template-columns: repeat(2, 1fr); }
+            .bento-grid-md-3 { grid-template-columns: repeat(3, 1fr); }
+            .bento-grid-md-4 { grid-template-columns: repeat(4, 1fr); }
+            .col-span-md-2 { grid-column: span 2; }
+            .row-span-md-2 { grid-row: span 2; }
+        }
+        @media (min-width: 1024px) {
+            .bento-grid-lg-3 { grid-template-columns: repeat(3, 1fr); }
+            .bento-grid-lg-4 { grid-template-columns: repeat(4, 1fr); }
+            .col-span-lg-2 { grid-column: span 2; }
+            .col-span-lg-3 { grid-column: span 3; }
+            .col-span-lg-4 { grid-column: span 4; }
+            .row-span-lg-2 { grid-row: span 2; }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-inter">
+
+    <section id="page1" class="section-page bg-black text-center">
+        <h1 class="text-7xl md:text-8xl lg:text-9xl font-extrabold leading-tight text-white mb-4 animate-on-scroll">
+            <span class="text-cyan-400">城市设计</span>AI辅助系统
+        </h1>
+        <p class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-200 animate-on-scroll delay-200">
+            项目技术交底文案 <span class="text-gray-400">V2.0</span>
+        </p>
+    </section>
+
+    <section id="page2" class="section-page bg-black">
+        <div class="max-w-6xl w-full text-center animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-purple-400 mb-8">
+                执行摘要 <span class="text-gray-200">Executive Summary</span>
+            </h2>
+            <p class="text-xl md:text-2xl lg:text-3xl leading-relaxed text-gray-200 mb-8">
+                本项目旨在构建一套先进的AI辅助城市设计系统，通过**AI Agent架构**，实现城市设计前期**现状认知、问题诊断与策略生成**的自动化与智能化。系统将整合多源数据，利用大型语言模型（LLM）进行专业推理，并支持模块化、可扩展的人机协作。首阶段聚焦于五大核心分析维度，旨在显著提升城市设计的效率与科学性。
+            </p>
+            <div class="flex justify-center items-center space-x-8 mt-12">
+                <div class="text-center">
+                    <i class="fas fa-brain text-cyan-400 text-6xl mb-4"></i>
+                    <p class="text-xl font-semibold text-gray-200">AI赋能</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-cogs text-purple-400 text-6xl mb-4"></i>
+                    <p class="text-xl font-semibold text-gray-200">模块化</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-chart-line text-lime-400 text-6xl mb-4"></i>
+                    <p class="text-xl font-semibold text-gray-200">效率提升</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page3" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-lime-400 mb-12 text-center">
+                项目目标与总体构建思路 <span class="text-gray-200">Overall Vision</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid-item col-span-full md:col-span-1 relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-4">数据深度感知</h3>
+                    <p class="text-lg text-gray-300 flex-grow">
+                        整合GIS、企业、POI、图像、文本等多源异构数据，实现对城市环境的全面感知。
+                    </p>
+                    <i class="fas fa-database text-cyan-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-4">智能分析与策略</h3>
+                    <p class="text-lg text-gray-300 flex-grow">
+                        集成LLM进行专业推理和语义理解，生成具备理由、符合原则的策略建议。
+                    </p>
+                    <i class="fas fa-lightbulb text-purple-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-4">模块化与可扩展</h3>
+                    <p class="text-lg text-gray-300 flex-grow">
+                        AI Agent架构，Agent独立运行、迭代、替换，支持按需组合成复杂任务流。
+                    </p>
+                    <i class="fas fa-cubes text-lime-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-4">人机协作与交互</h3>
+                    <p class="text-lg text-gray-300 flex-grow">
+                        支持用户输入互动与AI对话式反馈，实现可交互的策略推演与问答。
+                    </p>
+                    <i class="fas fa-comments text-cyan-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                 <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-4">标准化成果管理</h3>
+                    <p class="text-lg text-gray-300 flex-grow">
+                        自动化图文生成，支持多种格式输出，统一成果管理和版本控制。
+                    </p>
+                    <i class="fas fa-file-alt text-purple-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-4">可解释性与鲁棒性</h3>
+                    <p class="text-lg text-gray-300 flex-grow">
+                        提升AI决策可解释性，增强系统在复杂数据和不确定性环境下的鲁棒性。
+                    </p>
+                    <i class="fas fa-shield-alt text-lime-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page4" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-cyan-400 mb-12 text-center">
+                项目开发结构与阶段划分 <span class="text-gray-200">Development Phases</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-2">
+                <div class="grid-item col-span-full md:col-span-1 relative row-span-md-2">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-4xl font-bold text-purple-400 mb-4">阶段一：</h3>
+                    <h3 class="text-5xl font-bold text-white mb-6">现状认知与策略生成</h3>
+                    <p class="text-xl text-gray-300 flex-grow">
+                        利用现有空间数据与规划资料，对项目地块进行功能、风貌、交通、空间等方面的系统评估，输出具备专业洞察力的图件、文字、策略建议，为后续设计提供智能支撑。本阶段将重点解决数据整合、基础分析、初步策略生成及可视化输出问题。
+                    </p>
+                    <i class="fas fa-map-marked-alt text-purple-600 text-8xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item col-span-full md:col-span-1 relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-4xl font-bold text-lime-400 mb-4">阶段二：</h3>
+                    <h3 class="text-5xl font-bold text-white mb-6">方案辅助生成与智能优化</h3>
+                    <p class="text-xl text-gray-300 flex-grow">
+                        在策略框架基础上，结合给定指标和设计原则，实现自动生成多种空间布局草图、三维体量模型，并提供性能评估与设计改进建议。此阶段将引入更复杂的生成式AI和优化算法。
+                    </p>
+                     <i class="fas fa-project-diagram text-lime-600 text-8xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page5" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-purple-400 mb-12 text-center">
+                项目概况识别模块 <span class="text-gray-200">Project Overview</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">工作流程</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>梳理地块区位、交通条件、周边建设、用地现状、土地权属</li>
+                        <li>输出项目基础图件和文字说明</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">数据依赖</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>项目边界（Polygon）</li>
+                        <li>土地使用现状（GeoJSON）</li>
+                        <li>地籍图（含权属信息）</li>
+                        <li>道路/轨交/公交点位、公共服务POI点</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">输出目标</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>区位图、交通图、用地图、权属图</li>
+                        <li>项目概况文字说明（报告/PPT）</li>
+                    </ul>
+                </div>
+                <div class="grid-item col-span-full md:col-span-2 lg:col-span-3 relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">Agent结构</h3>
+                    <p class="text-lg text-gray-300">
+                        LocationContext Agent, TransportAccess Agent, LanduseBuild Agent, LandOwnership Agent, ContextNarrative Agent
+                    </p>
+                    <i class="fas fa-sitemap text-cyan-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page6" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-lime-400 mb-12 text-center">
+                功能分析模块 <span class="text-gray-200">Function Analysis</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">工作流程</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>分析现状功能与产业分布</li>
+                        <li>结合人口/POI/产业趋势识别需求</li>
+                        <li>参考上位规划、案例研究提出功能定位与布局策略</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">数据依赖</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>用地现状、企业数据、信令数据、人口数据</li>
+                        <li>公共设施POI、相关规划文本</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">输出目标</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>功能结构图、热力图、OD图</li>
+                        <li>案例对比分析、产业建议段落</li>
+                        <li>概念功能布局草图</li>
+                    </ul>
+                </div>
+                <div class="grid-item col-span-full md:col-span-2 lg:col-span-3 relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">Agent结构</h3>
+                    <p class="text-lg text-gray-300">
+                        FunctionSpatial Agent, IndustryTrends Agent, DemandMatch Agent, PlanningInterpret Agent, BenchmarkCases Agent, FunctionStrategy Agent, FunctionLayout Agent
+                    </p>
+                    <i class="fas fa-chart-pie text-purple-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page7" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-cyan-400 mb-12 text-center">
+                风貌分析模块 <span class="text-gray-200">Landscape Analysis</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">工作流程</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>深度分析建筑高度、界面、天际线、风貌分区</li>
+                        <li>识别视觉资源，生成具有专业判断力的风貌策略</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">数据依赖</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>建筑轮廓+高度、路网、POI、街景图（选配）</li>
+                        <li>影像资料、规划控规数据、地标信息</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">输出目标</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>高度图、界面连续性图、风貌分区图、天际线图</li>
+                        <li>各区设计引导文字（高度控制、立面风格、材质建议等）</li>
+                    </ul>
+                </div>
+                <div class="grid-item col-span-full md:col-span-2 lg:col-span-3 relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">Agent结构</h3>
+                    <p class="text-lg text-gray-300">
+                        MorphoBase Agent, Morpho3D Agent, VisualAsset Agent, StreetInterface Agent, Skyline Agent, CharacterZone Agent, StyleGuide Agent
+                    </p>
+                    <i class="fas fa-city text-lime-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page8" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-purple-400 mb-12 text-center">
+                交通分析模块 <span class="text-gray-200">Traffic Analysis</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">工作流程</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>分析项目区域对外交通关系、内部路网、公共交通与慢行系统</li>
+                        <li>识别断裂点与出行行为，提出组织优化建议</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">数据依赖</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>道路网、轨交/公交点位、项目边界、建筑轮廓</li>
+                        <li>手机信令OD数据、街道等级、功能需求节点</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">输出目标</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>道路等级图、等时圈图、OD箭图、公交服务盲区图</li>
+                        <li>出入口分析结果 + 交通策略建议</li>
+                    </ul>
+                </div>
+                <div class="grid-item col-span-full md:col-span-2 lg:col-span-3 relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">Agent结构</h3>
+                    <p class="text-lg text-gray-300">
+                        RoadStructure Agent, AccessEval Agent, InternalNetwork Agent, PedestrianFlow Agent, TransitCoverage Agent, ODPattern Agent, TransportStrategy Agent
+                    </p>
+                    <i class="fas fa-route text-cyan-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page9" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-lime-400 mb-12 text-center">
+                空间分析模块 <span class="text-gray-200">Space Analysis</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">工作流程</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>构建空间骨架、评估可达性与街坊尺度</li>
+                        <li>识别断裂与空间潜力，提出空间结构优化策略</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">数据依赖</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>建筑轮廓、道路网、绿地广场数据、街角空间、POI</li>
+                        <li>项目边界、开放空间面数据、街景（选配）</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">输出目标</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>空间结构图、渗透性图、断裂图、街坊尺度图</li>
+                        <li>潜力点图层 + 策略建议段落</li>
+                    </ul>
+                </div>
+                <div class="grid-item col-span-full md:col-span-2 lg:col-span-3 relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">Agent结构</h3>
+                    <p class="text-lg text-gray-300">
+                        CorePattern Agent, Permeability Agent, OpenSpace Agent, BlockMorphology Agent, Disconnection Agent, SpatialPotential Agent, SpatialStrategy Agent
+                    </p>
+                    <i class="fas fa-vector-square text-purple-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page10" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-cyan-400 mb-12 text-center">
+                技术与接口建议 <span class="text-gray-200">Technology & Interfaces</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-2">
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">标准化接口</h3>
+                    <p class="text-lg text-gray-300">
+                        所有 Agent 均设计为标准化可调用的函数/服务接口（支持 API/Function 调用），确保模块间松耦合。
+                    </p>
+                    <i class="fas fa-network-wired text-lime-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">用户交互</h3>
+                    <p class="text-lg text-gray-300">
+                        支持用户输入互动与 AI 对话式反馈，并记录用户反馈以进行迭代学习。
+                    </p>
+                    <i class="fas fa-user-friends text-cyan-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">多格式输出</h3>
+                    <p class="text-lg text-gray-300">
+                        图件支持 .png/.svg/GeoJSON，文本支持 Markdown、PDF、Word，具备结构化和版本管理。
+                    </p>
+                    <i class="fas fa-file-export text-purple-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">本地部署</h3>
+                    <p class="text-lg text-gray-300">
+                        所有模块需支持本地部署，数据不得上传至公网，确保数据安全和隐私。
+                    </p>
+                    <i class="fas fa-server text-lime-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item col-span-full relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">推荐技术栈</h3>
+                    <p class="text-lg text-gray-300">
+                        Python（GeoPandas、NetworkX、LLM接口）、前端 CesiumJS 或 Streamlit。
+                    </p>
+                    <i class="fas fa-code text-cyan-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page11" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-purple-400 mb-12 text-center">
+                第一阶段开发周期建议 <span class="text-gray-200">Phase 1 Development Cycle</span>
+            </h2>
+            <div class="grid-item col-span-full relative p-8">
+                <div class="gradient-overlay lime"></div>
+                <div class="highlight-border lime"></div>
+                <table class="w-full text-left table-auto">
+                    <thead>
+                        <tr class="text-lime-400 text-2xl border-b border-gray-700">
+                            <th class="py-3 px-4">阶段 <span class="text-gray-400">Phase</span></th>
+                            <th class="py-3 px-4">内容 <span class="text-gray-400">Content</span></th>
+                            <th class="py-3 px-4">建议周期 <span class="text-gray-400">Duration</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-200 text-xl">
+                        <tr class="border-b border-gray-800">
+                            <td class="py-3 px-4">第一阶段1期</td>
+                            <td class="py-3 px-4">项目概况 + 功能分析模块原型搭建</td>
+                            <td class="py-3 px-4">2周</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-3 px-4">第一阶段2期</td>
+                            <td class="py-3 px-4">风貌+交通+空间分析模块接入与联调</td>
+                            <td class="py-3 px-4">3周</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4">第一阶段3期</td>
+                            <td class="py-3 px-4">输出统一交互界面、策略组合模板与导出功能</td>
+                            <td class="py-3 px-4">1周</td>
+                        </tr>
+                        <tr class="text-white text-2xl font-bold bg-gray-900">
+                            <td class="py-4 px-4">合计</td>
+                            <td class="py-4 px-4">第一阶段完成5大板块 + 可交互原型系统</td>
+                            <td class="py-4 px-4">约6周（含调试与文档）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="page12" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-lime-400 mb-12 text-center">
+                优先开发Skyline Agent <span class="text-gray-200">Prioritizing Skyline Agent</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-2">
+                <div class="grid-item relative row-span-md-2">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-4">核心优势</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>**明确痛点与直观可视化：** 天际线分析成果直接影响城市形象，易于展示。</li>
+                        <li>**技术路径清晰：** 数据（建筑高度）易得，计算逻辑成熟，可视化效果直观。</li>
+                        <li>**LLM赋能价值高：** 将统计数据转化为专业、有理由的城市设计建议，提升决策科学性。</li>
+                        <li>**验证Agent架构：** 作为风貌模块核心，验证独立开发与集成可行性。</li>
+                        <li>**承前启后作用：** 为后续模块提供基础高度数据。</li>
+                        <li>**早期演示效果显著：** 快速展示系统潜力与价值。</li>
+                    </ul>
+                    <i class="fas fa-building text-cyan-600 text-8xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-4">开发深化思路</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>**基础功能实现：** 遵循现有Python脚本逻辑。</li>
+                        <li>**参数可配置化：** 允许用户调整缓冲区、高度比例系数。</li>
+                        <li>**LLM Prompt优化：** 持续迭代Prompt，加入更多城市设计上下文。</li>
+                        <li>**结果可视化优化：** 颜色渐变、过高/过低建筑突出显示。</li>
+                        <li>**接口标准化：** 确保输入输出符合统一API规范。</li>
+                    </ul>
+                    <i class="fas fa-wrench text-purple-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-4">未来展望</h3>
+                    <p class="text-lg text-gray-300">
+                        可扩展至多种天际线视点分析、高度剖面图生成，提供更精细的城市设计辅助。
+                    </p>
+                    <i class="fas fa-chart-area text-lime-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page13" class="section-page bg-black">
+        <div class="max-w-6xl w-full animate-on-scroll">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-purple-400 mb-12 text-center">
+                待办行动事项 <span class="text-gray-200">Action Items</span>
+            </h2>
+            <div class="bento-grid md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid-item relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">数据准备与规范</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>定义详细数据接入规范</li>
+                        <li>启动数据清洗与标准化工作</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay purple"></div>
+                    <div class="highlight-border purple"></div>
+                    <h3 class="text-3xl font-bold text-purple-400 mb-2">Skyline Agent原型开发</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>完成核心功能实现与LLM集成</li>
+                        <li>进行初步测试与效果验证</li>
+                    </ul>
+                </div>
+                <div class="grid-item relative">
+                    <div class="gradient-overlay lime"></div>
+                    <div class="highlight-border lime"></div>
+                    <h3 class="text-3xl font-bold text-lime-400 mb-2">Agent接口定义</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>明确各Agent的输入输出接口标准</li>
+                        <li>设计模块间数据流转协议</li>
+                    </ul>
+                </div>
+                <div class="grid-item col-span-full md:col-span-2 lg:col-span-3 relative">
+                    <div class="gradient-overlay cyan"></div>
+                    <div class="highlight-border cyan"></div>
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-2">交互界面设计与开发</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-300">
+                        <li>规划统一的用户交互界面（UX/UI）</li>
+                        <li>启动前端原型开发</li>
+                    </ul>
+                    <i class="fas fa-tasks text-cyan-600 text-6xl absolute bottom-4 right-4 opacity-20"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Simple Intersection Observer to trigger scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                } else {
+                    // Optional: remove is-visible when out of view to re-animate on scroll back
+                    // entry.target.classList.remove('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Add a small delay for elements in the same section
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.section-page').forEach(section => {
+                let delay = 0;
+                section.querySelectorAll('.animate-on-scroll').forEach(element => {
+                    element.style.transitionDelay = `${delay}s`;
+                    delay += 0.1; // Increment delay for sequential animations
+                });
+            });
+        });
+
+        // Basic scroll-based effects (more complex Apple-like effects typically need a framework like React with Framer Motion)
+        // This is a simplified example
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            // Example: Scale down/up the title on the first page as you scroll
+            const page1Title = document.querySelector('#page1 h1');
+            if (page1Title) {
+                const scale = Math.max(0.7, 1 - scrollY / 500); // Scale from 1 to 0.7 over 500px scroll
+                page1Title.style.transform = `scale(${scale})`;
+                page1Title.style.opacity = Math.max(0.3, 1 - scrollY / 300); // Fade out
+            }
+        });
+
+        // Placeholder for chart component (if a real library like Chart.js or ApexCharts were used)
+        // Example:
+        // function loadChart() {
+        //     const ctx = document.getElementById('myChart').getContext('2d');
+        //     new Chart(ctx, {
+        //         type: 'bar',
+        //         data: {
+        //             labels: ['模块1', '模块2', '模块3', '模块4', '模块5'],
+        //             datasets: [{
+        //                 label: 'Agent数量',
+        //                 data: [5, 7, 7, 7, 7],
+        //                 backgroundColor: [
+        //                     'rgba(6, 182, 212, 0.7)', // cyan
+        //                     'rgba(168, 85, 247, 0.7)', // purple
+        //                     'rgba(132, 204, 22, 0.7)', // lime
+        //                     'rgba(6, 182, 212, 0.7)',
+        //                     'rgba(168, 85, 247, 0.7)'
+        //                 ],
+        //                 borderColor: [
+        //                     'rgba(6, 182, 212, 1)',
+        //                     'rgba(168, 85, 247, 1)',
+        //                     'rgba(132, 204, 22, 1)',
+        //                     'rgba(6, 182, 212, 1)',
+        //                     'rgba(168, 85, 247, 1)'
+        //                 ],
+        //                 borderWidth: 1
+        //             }]
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             maintainAspectRatio: false,
+        //             scales: {
+        //                 y: {
+        //                     beginAtZero: true,
+        //                     grid: { color: 'rgba(255,255,255,0.1)' },
+        //                     ticks: { color: '#ccc' }
+        //                 },
+        //                 x: {
+        //                     grid: { color: 'rgba(255,255,255,0.1)' },
+        //                     ticks: { color: '#ccc' }
+        //                 }
+        //             },
+        //             plugins: {
+        //                 legend: { display: false }
+        //             }
+        //         }
+        //     });
+        // }
+        // window.onload = loadChart; // Call on window load
+    </script>
+</body>
+</html>
