@@ -1,10 +1,7 @@
-- 👋 Hi, I’m @sudoublesu
-- 👀 I’m interested in architecture
-- 🌱 I’m currently learning phython
-- 💞️ I’m looking to collaborate on urban planning
-- 📫 How to reach me sudoublesu@163.com
-
-<!---
-sudoublesu/sudoublesu is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+在当前城市规划从经验驱动转向“数据驱动”和“设计智能化”的时代背景下，本项目旨在构建一套先进的AI辅助城市设计系统，以提升城市设计前期（现状认知、问题诊断、策略生成）的效率与科学性。该系统将以高度模块化的AI Agent架构为核心，模拟城市设计师的工作流程，拆解为一系列具备特定职能的智能Agent，并具备以下核心能力：
+•	多模态数据深度感知： 集成并分析GIS、企业、POI、图像、文本等多源异构数据，实现对城市环境的全面感知，并预留遥感影像、规划图则、街景数据等更高级数据源的接入能力。
+•	智能化分析与策略生成： 每个Agent不仅执行结构化分析，还将集成大型语言模型（LLM）进行专业知识推理和语义理解，生成具备理由、符合城市设计原则的分析结论和策略建议。
+•	模块化与可扩展性： 遵循AI Agent架构，每个Agent可独立运行、迭代、替换，支持按需组合成复杂的任务流，确保系统的高度灵活性和未来的持续演进。
+•	人机协作与交互： 支持用户输入互动与AI对话式反馈，允许设计师在设计流程中进行可交互的策略推演与问答，实现人机协同的智能设计。
+•	标准化图文输出与成果管理： 实现分模块自动化图文生成，支持多种格式输出，并提供统一的成果管理和版本控制机制。
+可解释性与鲁棒性： 致力于提升AI决策的可解释性，让用户理解Agent得出结论的依据，并增强系统在复杂数据和不确定性环境下的鲁棒性。
